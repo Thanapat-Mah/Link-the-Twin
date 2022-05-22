@@ -51,12 +51,10 @@ while run:
         if set_panel:
             if keys[pygame.K_t] and (event.type == pygame.KEYDOWN):
                 game_panel.set_topleft(list(pyautogui.position()))
-                print(f'Top left = {list(pyautogui.position())}')
                 game_panel.calculate_cell_position()
                 topleft_text = str(game_panel.get_topleft())
             elif keys[pygame.K_b] and (event.type == pygame.KEYDOWN):
                 game_panel.set_bottomright(list(pyautogui.position()))
-                print(f'Bottom right = {list(pyautogui.position())}')
                 game_panel.calculate_cell_position()
                 bottomright_text = str(game_panel.get_bottomright())
 
