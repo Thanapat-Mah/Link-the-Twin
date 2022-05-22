@@ -16,20 +16,20 @@ from template_manager import TemplateManager
 game_panel = GamePanel()
 template_manager = TemplateManager(game_panel.get_cell_count())
 
-set_panel_button = Button(text='Set panel', rect=[10, 10, 80, 30])
+set_panel_button = Button(text='Set panel', rect=[10, 10, 130, 30])
 set_panel_button.set_is_active(False)
 set_panel = True
 
-read_template_button = Button(text='Read template', rect=[110, 10, 80, 30],
+read_template_button = Button(text='Read template', rect=[160, 10, 130, 30],
     active_color=(100, 200, 100), passive_color=(100, 200, 100))
 
-locate_button = Button(text='Locate', rect=[210, 10, 80, 30],
+locate_button = Button(text='Locate', rect=[310, 10, 130, 30],
     active_color=(100, 200, 100), passive_color=(100, 200, 100))
 
 ### run the program -------------------------------------------------------------------
 pygame.init()
 font_consola = pygame.font.Font('./CONSOLA.TTF', 12)
-win = pygame.display.set_mode((300, 100))
+win = pygame.display.set_mode((450, 100))
 topleft_text = '[0, 0]'
 bottomright_text = '[1920, 1080]'
 run = True
@@ -66,9 +66,9 @@ while run:
 
     # draw panel position
     topleft_text_surface = font_consola.render(topleft_text, True, (255, 255, 255))
-    win.blit(topleft_text_surface, (10, 60))
+    win.blit(topleft_text_surface, (10, 55))
     bottomright_text_surface = font_consola.render(bottomright_text, True, (255, 255, 255))
-    win.blit(bottomright_text_surface, (10, 80))
+    win.blit(bottomright_text_surface, (10, 75))
 
     pygame.display.update()
 
