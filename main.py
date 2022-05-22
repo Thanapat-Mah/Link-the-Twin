@@ -42,9 +42,11 @@ while run:
         if set_panel_button.check_click(event):
             set_panel = set_panel_button.get_is_active()
         elif read_template_button.check_click(event):
-            template_manager.read_template(game_panel.get_cell_positions(), game_panel.get_cell_size())
+            templates_count = template_manager.read_template(game_panel.get_cell_positions(), game_panel.get_cell_size())
+            game_panel.set_templates_count(templates_count)
         elif locate_button.check_click(event):
-            template_manager.locate_match_template('05-05')
+            game_panel.label_cells(template_manager)
+            # template_manager.locate_match_templates('2')
 
         # set panel size
         keys = pygame.key.get_pressed()

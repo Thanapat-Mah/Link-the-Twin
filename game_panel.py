@@ -4,8 +4,10 @@ class GamePanel:
         self.__panel_bottomright = [1920, 1080]
         self.__cell_count = [14, 7]
         self.__cell_size = [0, 0]
+        self.__cell_labels = [[False for row in range(self.__cell_count[1])] for col in range(self.__cell_count[0])]
         self.__cell_positions = [[[0, 0] for row in range(self.__cell_count[1])] for col in range(self.__cell_count[0])]
         self.calculate_cell_position()
+        self.__templates_count = 0
         print(f'Init game panel with {self.__cell_count[0]}x{self.__cell_count[1]} cells.')
 
     def get_cell_count(self):
@@ -29,6 +31,9 @@ class GamePanel:
     def set_bottomright(self, new_bottomright):
         self.__panel_bottomright = new_bottomright
 
+    def set_templates_count(self, new_templates_count):
+        self.__templates_count = new_templates_count
+
     def calculate_cell_position(self):
         delta_x = int((self.__panel_bottomright[0] - self.__panel_topleft[0])/self.__cell_count[0])
         delta_y = int((self.__panel_bottomright[1] - self.__panel_topleft[1])/self.__cell_count[1])
@@ -43,3 +48,14 @@ class GamePanel:
                 cell_y += delta_y
             cell_x += delta_x
             # print(self.__cell_positions[col])
+
+    def label_cells(self, template_manager):
+        for template_index in range(1, self.__templates_count+1):
+            match_templates_location = template_manager.locate_match_templates(str(template_index))
+            for location in match_templates_location:
+                cell_col = int((location[0] - self.__panel_topleft[0])/self.__cell_size[0])
+                cell_row = int((location[1] - self.__panel_topleft[1])/self.__cell_size[1])
+                if (cell_col >= 0) and (cell_col < self.__cell_count[0]):
+                    if (cell_row >= 0) and (cell_row < self.__cell_count[1]):
+                        self.__cell_labels[cell_col][cell_row] = template_index
+        print(self.__cell_labels)
