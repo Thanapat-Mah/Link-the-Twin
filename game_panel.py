@@ -139,21 +139,21 @@ class GamePanel:
         if self.__match_data:
             match_template = self.__match_data[0]
             match_cells = self.__match_data[1:3]
-        for match_cell in match_cells:
-            cell_x = 65 + match_cell[0]*draw_cell_size
-            cell_y = 110 + match_cell[1]*draw_cell_size
-            rect = (cell_x, cell_y, draw_cell_size, draw_cell_size)
-            pygame.draw.rect(display, (255, 120, 120), rect)
-        # highlight path with yellow
-        if len(self.__match_data) > 3:
-            match_path = self.__match_data[3]
-            for path_cell in match_path:
-                cell_x = 65 + path_cell[0]*draw_cell_size + int(draw_cell_size/4)
-                cell_y = 110 + path_cell[1]*draw_cell_size + int(draw_cell_size/4)
-                rect = (cell_x, cell_y,
-                    draw_cell_size - int(draw_cell_size/2),
-                    draw_cell_size - int(draw_cell_size/2))
-                pygame.draw.rect(display, (255, 255, 120), rect)
+            for match_cell in match_cells:
+                cell_x = 65 + match_cell[0]*draw_cell_size
+                cell_y = 110 + match_cell[1]*draw_cell_size
+                rect = (cell_x, cell_y, draw_cell_size, draw_cell_size)
+                pygame.draw.rect(display, (255, 120, 120), rect)
+            # highlight path with yellow
+            if len(self.__match_data) > 3:
+                match_path = self.__match_data[3]
+                for path_cell in match_path:
+                    cell_x = 65 + path_cell[0]*draw_cell_size + int(draw_cell_size/4)
+                    cell_y = 110 + path_cell[1]*draw_cell_size + int(draw_cell_size/4)
+                    rect = (cell_x, cell_y,
+                        draw_cell_size - int(draw_cell_size/2),
+                        draw_cell_size - int(draw_cell_size/2))
+                    pygame.draw.rect(display, (255, 255, 120), rect)
 
         # show the matched template
         template_x = 175    # (450 - 100)/2

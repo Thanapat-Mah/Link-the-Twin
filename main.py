@@ -32,6 +32,8 @@ font_consola = pygame.font.Font('./CONSOLA.TTF', 12)
 win = pygame.display.set_mode((450, 450))
 topleft_text = '[0, 0]'
 bottomright_text = '[1920, 1080]'
+auto_match = False
+count = 0
 run = True
 while run:
     for event in pygame.event.get():
@@ -50,7 +52,8 @@ while run:
             game_panel.set_templates_count(templates_count)
             read_template_button.set_is_active(True)
         # match_template templates in panel
-        elif match_template_button.check_click(event):
+        elif match_template_button.check_click(event) or auto_match:
+            # auto_match = True
             match_template_button.draw(win)
             pygame.display.update()
             game_panel.label_cells(template_manager)

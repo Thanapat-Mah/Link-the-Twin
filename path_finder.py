@@ -6,8 +6,6 @@ class Path:
 		self.__origin = origin
 		self.__path = [origin, cell]
 		self.__line_count = 1
-		
-		print(f'Init path: {self.__path}')
 
 	def __str__(self):
 		return f'{self.__path}'
@@ -63,8 +61,8 @@ class PathFinder:
 		original_padded_cells = padded_cells.copy()
 		limit_x = len(padded_cells) - 2
 		limit_y = len(padded_cells[0]) - 2
-		for current_x in range(1, 1 + 1):
-			for current_y in range(1, 1 + 1):
+		for current_x in range(1, limit_x + 1):
+			for current_y in range(1, limit_y + 1):
 				neighbors_position = []
 				neighbors_position.append((current_x + 1, current_y))
 				neighbors_position.append((current_x, current_y + 1))
