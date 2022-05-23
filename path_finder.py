@@ -4,7 +4,7 @@ class PathFinder:
 
 	# find cells with same label in four adjacent connectivity
 	@classmethod
-	def find_adjacent(cls, padded_cells, target_labels):
+	def find_adjacent(cls, padded_cells):
 		print(padded_cells[0][0])
 		original_padded_cells = padded_cells.copy()
 		limit_x = len(padded_cells) - 2
@@ -24,7 +24,8 @@ class PathFinder:
 							print(f'Found adjacent at ({current_x}, {current_y})')
 							print(f'      adjacent with ({neighbor_position[0]}, {neighbor_position[1]})')
 							print(f'      template number is {current_label}')
-							match_data = [] 	# [label, (current position), (neighbor position)]
+							match_data = [current_label] 	# [label, (current position), (neighbor position)]
 							match_data.append((current_x, current_y))
 							match_data.append((neighbor_position[0], neighbor_position[1]))
 							return match_data
+		return None

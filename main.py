@@ -4,7 +4,6 @@ import pprint
 from button import Button
 from game_panel import GamePanel
 from template_manager import TemplateManager
-from path_finder import PathFinder
 
 ### simple locate on screen
 # bee = None
@@ -58,7 +57,7 @@ while run:
             game_panel.padding_cells()
             match_template_button.set_is_active(True)
             # template_manager.match_template_match_templates('2')
-            PathFinder.find_adjacent(game_panel.get_padded_cells(), 6)
+            game_panel.find_path()
 
         # set panel size
         keys = pygame.key.get_pressed()
@@ -80,7 +79,7 @@ while run:
     set_panel_button.draw(win)
     read_template_button.draw(win)
     match_template_button.draw(win)
-    game_panel.draw(win)
+    game_panel.draw(win, template_manager)
 
     # draw panel position
     topleft_text_surface = font_consola.render(topleft_text, True, (255, 255, 255))

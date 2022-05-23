@@ -1,4 +1,8 @@
 import pygame
+from path_finder import PathFinder
+
+pygame.font.init()
+font_consola = pygame.font.Font('./CONSOLA.TTF', 12)
 
 class GamePanel:
     def __init__(self):
@@ -103,15 +107,27 @@ class GamePanel:
         self.__padded_cells = padded_cells
         return padded_cells
 
+    # find the path between same template on cells
+    def find_path(self):
+        self.__match_data = PathFinder.find_adjacent(self.__padded_cells)
+
     # draw the padded cell labels
-    def draw(self, display):
+    def draw(self, display, template_manager):
+        match_template = None
+        match_cells = []
+        if self.__match_data:
+            match_template = self.__match_data[0]
+            match_cells = self.__match_data[1:]
         draw_cell_size = 20
         cell_x = 65     # (450 - 16*20)/2
-        cell_y = 110    # (300 - 9*20)/2 + 50
-        for col in self.__padded_cells:
-            for cell in col:
+        cell_y = 110    # (450 - 100 - 9*20)/2 + 50
+        for col in range(len(self.__padded_cells)):
+            for row in range(len(self.__padded_cells[0])):
+                cell = self.__padded_cells[col][row]
+                # if its nothing, color with black
                 if cell == 0:
                     color = (50, 50, 50)
+                # if it has label, color with white
                 else:
                     color = (255, 255, 255)
                 rect = (cell_x, cell_y, draw_cell_size, draw_cell_size)
@@ -119,4 +135,23 @@ class GamePanel:
                 cell_y += draw_cell_size
             cell_x += draw_cell_size
             cell_y = 110
-        
+
+        # for all matched cell, color with red
+        for match_cell in match_cells:
+            cell_x = 65 + match_cell[0]*draw_cell_size
+            cell_y = 110 + match_cell[1]*draw_cell_size
+            rect = (cell_x, cell_y, draw_cell_size, draw_cell_size)
+            pygame.draw.rect(display, (255, 120, 120), rect)
+
+        # show the matched template
+        template_x = 175    # (450 - 100)/2
+        template_y = 320    # (110 + 9*20) + middle padding
+        rect = (template_x, template_y, 100, 100)
+        if match_template:
+            template_image = template_manager.get_template_image(match_template)
+            template_image = pygame.transform.scale(template_image, (100, 100))
+            display.blit(template_image, (template_x, template_y))
+        else:
+            pygame.draw.rect(display, (50, 50, 50), rect)
+            text_surface = font_consola.render('No Matched.', True, (255, 255, 255))
+            display.blit(text_surface, (template_x+10, template_y+40))

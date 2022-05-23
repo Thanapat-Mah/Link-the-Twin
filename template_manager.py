@@ -1,4 +1,5 @@
 import pyautogui
+import pygame
 from datetime import datetime
 import os
 
@@ -8,6 +9,9 @@ os.chdir(os.getcwd())
 class TemplateManager:
 	def __init__(self, cell_count):
 		self.__cell_count = cell_count
+
+	def get_template_image(self, template_number):
+		return pygame.image.load(f'templates/template{template_number}.png')
 
 	def read_template(self, cell_positions, cell_size, distinct=True):
 		if not distinct:
