@@ -108,8 +108,8 @@ class GamePanel:
         return padded_cells
 
     # find the path between same template on cells
-    def find_path(self):
-        self.__match_data = PathFinder.find_path(self.__padded_cells)
+    def match_template(self):
+        self.__match_data = PathFinder.match_template(self.__padded_cells)
 
     # draw the padded cell labels
     def draw(self, display, template_manager):

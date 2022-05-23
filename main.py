@@ -57,7 +57,7 @@ while run:
             game_panel.padding_cells()
             match_template_button.set_is_active(True)
             # template_manager.match_template_match_templates('2')
-            game_panel.find_path()
+            game_panel.match_template()
 
         # set panel size
         keys = pygame.key.get_pressed()
