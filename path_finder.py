@@ -1,6 +1,9 @@
 class PathFinder:
-	def find_path(self, padded_cells, target_labels):
-		pass
+	@classmethod
+	def find_path(cls, padded_cells):
+		match_data = None
+		match_data = cls.find_adjacent(padded_cells)
+		return match_data
 
 	# find cells with same label in four adjacent connectivity
 	@classmethod
@@ -12,9 +15,7 @@ class PathFinder:
 		for current_x in range(1, limit_x + 1):
 			for current_y in range(1, limit_y + 1):
 				neighbors_position = []
-				neighbors_position.append((current_x - 1, current_y))
 				neighbors_position.append((current_x + 1, current_y))
-				neighbors_position.append((current_x, current_y - 1))
 				neighbors_position.append((current_x, current_y + 1))
 				current_label = original_padded_cells[current_x][current_y]
 				if current_label != 0:
