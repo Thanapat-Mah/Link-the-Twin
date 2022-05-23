@@ -27,7 +27,7 @@ class TemplateManager:
 					test_template = pyautogui.screenshot('templates/test_template.png', region=test_cell_region)
 					template_exist = False
 					for exist_template in templates:
-						if pyautogui.locate(test_template, exist_template, confidence=.5):
+						if pyautogui.locate(test_template, exist_template, confidence=.7):
 							template_exist = True
 					if not template_exist:
 						scale_x = int(cell_size[0]/10)
@@ -46,7 +46,7 @@ class TemplateManager:
 
 	def locate_match_templates(self, template_number, region):
 		match_list = []
-		for im in pyautogui.locateAllOnScreen(f'templates/template{template_number}.png', confidence=.5, region=region):
+		for im in pyautogui.locateAllOnScreen(f'templates/template{template_number}.png', confidence=.7, region=region):
 			location = (im.left, im.top)
 			match_list.append(location)
 		return match_list

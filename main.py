@@ -4,6 +4,7 @@ import pprint
 from button import Button
 from game_panel import GamePanel
 from template_manager import TemplateManager
+from path_finder import PathFinder
 
 ### simple locate on screen
 # bee = None
@@ -23,7 +24,7 @@ set_panel = True
 read_template_button = Button(text='Read template', rect=[160, 10, 130, 30],
     active_color=(100, 200, 100))
 
-locate_button = Button(text='Locate', rect=[310, 10, 130, 30],
+match_template_button = Button(text='Match template', rect=[310, 10, 130, 30],
     active_color=(100, 200, 100))
 
 ### run the program -------------------------------------------------------------------
@@ -49,14 +50,15 @@ while run:
             templates_count = template_manager.read_template(game_panel.get_cell_positions(), game_panel.get_cell_size())
             game_panel.set_templates_count(templates_count)
             read_template_button.set_is_active(True)
-        # locate templates in panel
-        elif locate_button.check_click(event):
-            locate_button.draw(win)
+        # match_template templates in panel
+        elif match_template_button.check_click(event):
+            match_template_button.draw(win)
             pygame.display.update()
             game_panel.label_cells(template_manager)
             game_panel.padding_cells()
-            locate_button.set_is_active(True)
-            # template_manager.locate_match_templates('2')
+            match_template_button.set_is_active(True)
+            # template_manager.match_template_match_templates('2')
+            PathFinder.find_adjacent(game_panel.get_padded_cells(), 6)
 
         # set panel size
         keys = pygame.key.get_pressed()
@@ -77,7 +79,7 @@ while run:
     # draw components
     set_panel_button.draw(win)
     read_template_button.draw(win)
-    locate_button.draw(win)
+    match_template_button.draw(win)
     game_panel.draw(win)
 
     # draw panel position

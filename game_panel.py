@@ -12,6 +12,7 @@ class GamePanel:
         self.__padded_cells = self.__cell_labels.copy()
         self.padding_cells()
         self.__templates_count = 0
+        self.__match_data = []
         print(f'Init game panel with {self.__cell_count[0]}x{self.__cell_count[1]} cells.')
 
     def get_cell_count(self):
@@ -37,6 +38,12 @@ class GamePanel:
         region.append(self.__panel_bottomright[1] - self.__panel_topleft[1])
         return region
 
+    def get_cell_labels(self):
+        return self.__cell_labels
+
+    def get_padded_cells(self):
+        return self.__padded_cells
+
     def set_topleft(self, new_topleft):
         self.__panel_topleft = new_topleft
 
@@ -45,6 +52,11 @@ class GamePanel:
 
     def set_templates_count(self, new_templates_count):
         self.__templates_count = new_templates_count
+
+    def reset_cell_labels(self):
+        for col in range(len(self.__cell_labels)):
+            for row in range(len(self.__cell_labels[col])):
+                self.__cell_labels[col][row] = 0
 
     # calculate position for screeenshot the cells
     def calculate_cell_position(self):
@@ -64,6 +76,7 @@ class GamePanel:
 
     # label cells according to templates found
     def label_cells(self, template_manager):
+        self.reset_cell_labels()
         for template_index in range(1, self.__templates_count+1):
             match_templates_location = template_manager.locate_match_templates(str(template_index), self.get_panel_region())
             for location in match_templates_location:
@@ -93,7 +106,7 @@ class GamePanel:
     # draw the padded cell labels
     def draw(self, display):
         draw_cell_size = 20
-        cell_x = 65    # (450 - 16*20)/2
+        cell_x = 65     # (450 - 16*20)/2
         cell_y = 110    # (300 - 9*20)/2 + 50
         for col in self.__padded_cells:
             for cell in col:
