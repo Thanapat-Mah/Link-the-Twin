@@ -25,6 +25,14 @@ class GamePanel:
     def get_bottomright(self):
         return self.__panel_bottomright
 
+    def get_panel_region(self):
+        region = []
+        region.append(self.__panel_topleft[0])
+        region.append(self.__panel_topleft[1])
+        region.append(self.__panel_bottomright[0] - self.__panel_topleft[0])
+        region.append(self.__panel_bottomright[1] - self.__panel_topleft[1])
+        return region
+
     def set_topleft(self, new_topleft):
         self.__panel_topleft = new_topleft
 
@@ -51,11 +59,30 @@ class GamePanel:
 
     def label_cells(self, template_manager):
         for template_index in range(1, self.__templates_count+1):
-            match_templates_location = template_manager.locate_match_templates(str(template_index))
+            match_templates_location = template_manager.locate_match_templates(str(template_index), self.get_panel_region())
             for location in match_templates_location:
                 cell_col = int((location[0] - self.__panel_topleft[0])/self.__cell_size[0])
                 cell_row = int((location[1] - self.__panel_topleft[1])/self.__cell_size[1])
                 if (cell_col >= 0) and (cell_col < self.__cell_count[0]):
                     if (cell_row >= 0) and (cell_row < self.__cell_count[1]):
                         self.__cell_labels[cell_col][cell_row] = template_index
-        print(self.__cell_labels)
+        # print(self.__cell_labels)
+    
+    def padding_cells(self):
+        padded_cells = []
+        # add left padding
+        padded_cells.append([0 for i in range(self.__cell_count[1]+2)])
+        for col in range(self.__cell_count[0]):
+            padded_col = self.__cell_labels[col].copy()
+            padded_col.insert(0, 0)     # add top padding of column
+            padded_col.insert(len(padded_col), 0)    # add bottom padding of column
+            padded_cells.append(padded_col)
+        # add right padding
+        padded_cells.append([0 for i in range(self.__cell_count[1]+2)])
+        # print(padded_cells)
+        return padded_cells
+
+    def draw(self, display):
+        draw_cell_size = 20
+        cell_x = 170    # 450 - 14*20
+        cell_y = 160    # 300 - 100 - 7*20
