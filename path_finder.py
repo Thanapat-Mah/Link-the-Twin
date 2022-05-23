@@ -71,9 +71,9 @@ class PathFinder:
 					for neighbor_position in neighbors_position:
 						neighbor_label = original_padded_cells[neighbor_position[0]][neighbor_position[1]]
 						if neighbor_label == current_label:
-							print(f'Found adjacent at ({current_x}, {current_y})')
-							print(f'      adjacent with ({neighbor_position[0]}, {neighbor_position[1]})')
-							print(f'      template number is {current_label}')
+							# print(f'Found adjacent at ({current_x}, {current_y})')
+							# print(f'      adjacent with ({neighbor_position[0]}, {neighbor_position[1]})')
+							# print(f'      template number is {current_label}')
 							match_data = [current_label] 	# [label, (current position), (neighbor position)]
 							match_data.append((current_x, current_y))
 							match_data.append((neighbor_position[0], neighbor_position[1]))
@@ -133,8 +133,8 @@ class PathFinder:
 									found_path = new_path
 					paths = new_paths
 				if found_match:
-					print(f'Found match of ({found_path.get_origin()})')
-					print(f'Found path is {found_path}')
+					# print(f'Found match of ({found_path.get_origin()})')
+					# print(f'Found path is {found_path}')
 					match_data = [current_label] 	# [label, (current position), (neighbor position)]
 					match_data.append((found_path.get_origin()[0], found_path.get_origin()[1]))
 					match_data.append((found_path.get_terminal()[0], found_path.get_terminal()[1]))

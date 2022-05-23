@@ -44,20 +44,26 @@ class TemplateManager:
 			templates = []
 			for col in range(self.__cell_count[0]):
 				for row in range(self.__cell_count[1]):
-					test_scale_x = int(cell_size[0]/5)
-					test_scale_y = int(cell_size[1]/5)
+					test_scale_x = int(cell_size[0]/4)
+					test_scale_y = int(cell_size[1]/4)
 					test_cell_region = (cell_positions[col][row][0]+test_scale_x, cell_positions[col][row][1]+test_scale_y,
-						3*test_scale_x, 3*test_scale_y)
+						2*test_scale_x, 2*test_scale_y)
 					test_template = pyautogui.screenshot('templates/test_template.png', region=test_cell_region)
 					template_exist = False
 					for exist_template in templates:
 						if pyautogui.locate(test_template, exist_template, confidence=.7):
 							template_exist = True
 					if not template_exist:
-						scale_x = int(cell_size[0]/10)
-						scale_y = int(cell_size[1]/10)
-						cell_region = (cell_positions[col][row][0]+scale_x, cell_positions[col][row][1]+scale_y,
-							9*scale_x, 9*scale_y)
+						scale_x = cell_size[0]/100
+						scale_y = cell_size[1]/100
+						cell_region = (cell_positions[col][row][0]+int(15*scale_x),
+							cell_positions[col][row][1]+int(15*scale_y),
+							int(85*scale_x),
+							int(85*scale_y))
+						# cell_region = (cell_positions[col][row][0],
+						# 	cell_positions[col][row][1],
+						# 	cell_size[0],
+						# 	cell_size[1])
 						template = pyautogui.screenshot('templates/current_template.png', region=cell_region)
 						templates.append(template)
 			i = 1

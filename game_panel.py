@@ -8,7 +8,7 @@ class GamePanel:
     def __init__(self):
         self.__panel_topleft = [0, 0]     # [x, y]
         self.__panel_bottomright = [1920, 1080]
-        self.__cell_count = [14, 7]
+        self.__cell_count = [14, 8]
         self.__cell_size = [0, 0]
         self.__cell_labels = [[False for row in range(self.__cell_count[1])] for col in range(self.__cell_count[0])]
         self.__cell_positions = [[[0, 0] for row in range(self.__cell_count[1])] for col in range(self.__cell_count[0])]
@@ -17,7 +17,7 @@ class GamePanel:
         self.padding_cells()
         self.__templates_count = 0
         self.__match_data = []
-        print(f'Init game panel with {self.__cell_count[0]}x{self.__cell_count[1]} cells.')
+        # print(f'Init game panel with {self.__cell_count[0]}x{self.__cell_count[1]} cells.')
 
     def get_cell_count(self):
         return self.__cell_count

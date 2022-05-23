@@ -25,6 +25,7 @@ read_template_button = Button(text='Read template', rect=[160, 10, 130, 30],
 
 match_template_button = Button(text='Match template', rect=[310, 10, 130, 30],
     active_color=(100, 200, 100))
+match_template_button.set_is_active(False)
 
 ### run the program -------------------------------------------------------------------
 pygame.init()
@@ -37,6 +38,7 @@ count = 0
 run = True
 while run:
     for event in pygame.event.get():
+        this_round_match = False
         if event.type == pygame.QUIT:
             run = False
 
@@ -52,15 +54,8 @@ while run:
             game_panel.set_templates_count(templates_count)
             read_template_button.set_is_active(True)
         # match_template templates in panel
-        elif match_template_button.check_click(event) or auto_match:
-            # auto_match = True
-            match_template_button.draw(win)
-            pygame.display.update()
-            game_panel.label_cells(template_manager)
-            game_panel.padding_cells()
-            match_template_button.set_is_active(True)
-            # template_manager.match_template_match_templates('2')
-            game_panel.match_template()
+        elif match_template_button.check_click(event):
+            auto_match = match_template_button.get_is_active()
 
         # set panel size
         keys = pygame.key.get_pressed()
@@ -75,6 +70,13 @@ while run:
                 game_panel.set_bottomright(list(pyautogui.position()))
                 game_panel.calculate_cell_position()
                 bottomright_text = str(game_panel.get_bottomright())
+
+    if auto_match:
+        match_template_button.draw(win)
+        pygame.display.update()
+        game_panel.label_cells(template_manager)
+        game_panel.padding_cells()
+        game_panel.match_template()
 
     # refresh window
     win.fill((10, 10, 10))
