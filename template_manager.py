@@ -75,10 +75,17 @@ class TemplateManager:
 			print('Template reading finish.')
 			return len(templates)
 
-	def locate_match_templates(self, template_number, region):
+	def locate_match_templates(self, template_number, region, panel_topleft):
+		# match_list = []
+		# for im in pyautogui.locateAllOnScreen(f'templates/template{template_number}.png',
+		# 	confidence=.5, region=region, grayscale=True):
+		# 	location = (im.left, im.top)
+		# 	match_list.append(location)
+		# return match_list
 		match_list = []
-		for im in pyautogui.locateAllOnScreen(f'templates/template{template_number}.png',
-			confidence=.5, region=region, grayscale=True):
-			location = (im.left, im.top)
+		game_panel = pyautogui.screenshot(region=region)
+		for im in pyautogui.locateAll(f'templates/template{template_number}.png',
+			game_panel, confidence=.5, grayscale=True):
+			location = (im.left + panel_topleft[0], im.top + panel_topleft[1])
 			match_list.append(location)
 		return match_list
