@@ -44,6 +44,11 @@ class TemplateManager:
 			return self.__cell_count[0]*self.__cell_count[1]
 		else:
 			templates = []
+			if cell_size[0]*cell_size[1] > 5000:
+				match_confidence = 0.7
+			else:
+				match_confidence = 0.5 + round(cell_size[0]*cell_size[1]*0.2/5000, 2)
+			print(f'Set template match confidence to {match_confidence}')
 			for col in range(self.__cell_count[0]):
 				for row in range(self.__cell_count[1]):
 					test_scale_x = int(cell_size[0]/3)
@@ -53,7 +58,7 @@ class TemplateManager:
 					test_template = pyautogui.screenshot('templates/test_template.png', region=test_cell_region)
 					template_exist = False
 					for exist_template in templates:
-						if pyautogui.locate(test_template, exist_template, confidence=.6):
+						if pyautogui.locate(test_template, exist_template, confidence=match_confidence):
 							template_exist = True
 					if not template_exist:
 						scale_x = cell_size[0]/100
@@ -76,9 +81,9 @@ class TemplateManager:
 			os.remove('templates/test_template.png')
 			os.remove('templates/current_template.png')
 			print(f'{i-1} template is read.')
-			return len(templates)
+			return len(templates), match_confidence
 
-	def locate_match_templates(self, template_number, region, panel_topleft):
+	def locate_match_templates(self, template_number, region, panel_topleft, confidence=0.7):
 		# match_list = []
 		# for im in pyautogui.locateAllOnScreen(f'templates/template{template_number}.png',
 		# 	confidence=.5, region=region, grayscale=True):
@@ -88,7 +93,7 @@ class TemplateManager:
 		match_list = []
 		game_panel = pyautogui.screenshot(region=region)
 		template = self.__templates[str(template_number)]
-		for im in pyautogui.locateAll(template, game_panel, confidence=.6, grayscale=True):
+		for im in pyautogui.locateAll(template, game_panel, confidence=confidence, grayscale=True):
 			location = (im.left + panel_topleft[0], im.top + panel_topleft[1])
 			match_list.append(location)
 		return match_list

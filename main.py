@@ -51,12 +51,15 @@ while run:
         elif read_template_button.check_click(event):
             read_template_button.draw(win)
             pygame.display.update()
-            templates_count = template_manager.read_template(game_panel.get_cell_positions(), game_panel.get_cell_size())
+            templates_count, match_confidence = template_manager.read_template(game_panel.get_cell_positions(), game_panel.get_cell_size())
             game_panel.set_templates_count(templates_count)
+            game_panel.set_initial_match_confidence(match_confidence)
             read_template_button.set_is_active(True)
         # match_template templates in panel
         elif match_template_button.check_click(event):
             auto_match = match_template_button.get_is_active()
+            if auto_match:
+                match_template_button.draw(win)
 
         # set panel size
         keys = pygame.key.get_pressed()
@@ -79,12 +82,11 @@ while run:
         game_panel.padding_cells()
         game_panel.match_template()
 
-        win.fill((10, 10, 10))
         game_panel.draw(win, template_manager)
         # match_template_button.draw(win)
         pygame.display.update()
 
-        print(f'{time.time()-start_time:.2f}')
+        print(f'> Elasped = {time.time()-start_time:.3f} sec')
     else:
         # refresh window
         win.fill((10, 10, 10))

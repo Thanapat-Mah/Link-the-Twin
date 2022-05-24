@@ -17,7 +17,9 @@ class GamePanel:
         self.padding_cells()
         self.__templates_count = 0
         self.__match_data = []
-        # print(f'Init game panel with {self.__cell_count[0]}x{self.__cell_count[1]} cells.')
+        self.__initial_match_confidence = 0.7
+        self.__match_confidence = 0.7
+        print(f'Init game panel with {self.__cell_count[0]}x{self.__cell_count[1]} cells.')
 
     def get_cell_count(self):
         return self.__cell_count
@@ -29,9 +31,11 @@ class GamePanel:
         return self.__cell_size
 
     def get_topleft(self):
+        print(f'Set panel topleft to {self.__panel_topleft}')
         return self.__panel_topleft
 
     def get_bottomright(self):
+        print(f'Set panel bottomright to {self.__panel_bottomright}')
         return self.__panel_bottomright
 
     def get_panel_region(self):
@@ -56,6 +60,10 @@ class GamePanel:
 
     def set_templates_count(self, new_templates_count):
         self.__templates_count = new_templates_count
+
+    def set_initial_match_confidence(self, confidence):
+        self.__initial_match_confidence = confidence
+        self.__match_confidence = self.__initial_match_confidence
 
     def reset_cell_labels(self):
         for col in range(len(self.__cell_labels)):
@@ -85,7 +93,8 @@ class GamePanel:
             match_templates_location = template_manager.locate_match_templates(
                 template_index,
                 self.get_panel_region(),
-                self.__panel_topleft)
+                self.__panel_topleft,
+                self.__match_confidence)
             for location in match_templates_location:
                 cell_col = int((location[0] - self.__panel_topleft[0])/self.__cell_size[0])
                 cell_row = int((location[1] - self.__panel_topleft[1])/self.__cell_size[1])
@@ -113,6 +122,16 @@ class GamePanel:
     # find the path between same template on cells
     def match_template(self):
         self.__match_data = PathFinder.match_template(self.__padded_cells)
+        if self.__match_data == None:
+            if self.__match_confidence > 0.1:
+                self.__match_confidence *= 0.9
+                print(f'Decrease confidence to {self.__match_confidence}')
+            else:
+                print(f'Lowest confidence = {self.__match_confidence}')
+        else:
+            if self.__match_confidence < self.__initial_match_confidence:
+                self.__match_confidence = self.__initial_match_confidence
+                print(f'Reset confidence to {self.__initial_match_confidence}')
 
     # draw the padded cell labels
     def draw(self, display, template_manager):
