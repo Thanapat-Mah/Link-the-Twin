@@ -1,6 +1,7 @@
 import pygame
 import pyautogui
 import pprint
+import time
 from button import Button
 from game_panel import GamePanel
 from template_manager import TemplateManager
@@ -72,25 +73,32 @@ while run:
                 bottomright_text = str(game_panel.get_bottomright())
 
     if auto_match:
-        match_template_button.draw(win)
-        pygame.display.update()
+        start_time = time.time()
+
         game_panel.label_cells(template_manager)
         game_panel.padding_cells()
         game_panel.match_template()
 
-    # refresh window
-    win.fill((10, 10, 10))
-    # draw components
-    set_panel_button.draw(win)
-    read_template_button.draw(win)
-    match_template_button.draw(win)
-    game_panel.draw(win, template_manager)
+        win.fill((10, 10, 10))
+        game_panel.draw(win, template_manager)
+        # match_template_button.draw(win)
+        pygame.display.update()
 
-    # draw panel position
-    topleft_text_surface = font_consola.render(topleft_text, True, (255, 255, 255))
-    win.blit(topleft_text_surface, (10, 55))
-    bottomright_text_surface = font_consola.render(bottomright_text, True, (255, 255, 255))
-    win.blit(bottomright_text_surface, (10, 75))
+        print(f'{time.time()-start_time:.2f}')
+    else:
+        # refresh window
+        win.fill((10, 10, 10))
+        # draw components
+        set_panel_button.draw(win)
+        read_template_button.draw(win)
+        match_template_button.draw(win)
+        game_panel.draw(win, template_manager)
+
+        # draw panel position
+        topleft_text_surface = font_consola.render(topleft_text, True, (255, 255, 255))
+        win.blit(topleft_text_surface, (10, 55))
+        bottomright_text_surface = font_consola.render(bottomright_text, True, (255, 255, 255))
+        win.blit(bottomright_text_surface, (10, 75))
 
     pygame.display.update()
 

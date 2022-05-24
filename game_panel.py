@@ -82,7 +82,7 @@ class GamePanel:
     def label_cells(self, template_manager):
         self.reset_cell_labels()
         for template_index in range(1, self.__templates_count+1):
-            match_templates_location = template_manager.locate_match_templates(str(template_index), self.get_panel_region())
+            match_templates_location = template_manager.locate_match_templates(template_index, self.get_panel_region())
             for location in match_templates_location:
                 cell_col = int((location[0] - self.__panel_topleft[0])/self.__cell_size[0])
                 cell_row = int((location[1] - self.__panel_topleft[1])/self.__cell_size[1])

@@ -77,7 +77,8 @@ class TemplateManager:
 
 	def locate_match_templates(self, template_number, region):
 		match_list = []
-		for im in pyautogui.locateAllOnScreen(f'templates/template{template_number}.png', confidence=.7, region=region):
+		for im in pyautogui.locateAllOnScreen(f'templates/template{template_number}.png',
+			confidence=.5, region=region, grayscale=True):
 			location = (im.left, im.top)
 			match_list.append(location)
 		return match_list
