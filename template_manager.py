@@ -1,4 +1,5 @@
 import pyautogui
+# from PIL import Image
 import pygame
 from datetime import datetime
 import os
@@ -15,6 +16,7 @@ print(f'Init template folder at: {folder}')
 class TemplateManager:
 	def __init__(self, cell_count):
 		self.__cell_count = cell_count
+		self.__templates = dict()
 
 	def get_template_image(self, template_number):
 		return pygame.image.load(f'templates/template{template_number}.png')
@@ -38,7 +40,7 @@ class TemplateManager:
 				for row in range(self.__cell_count[1]):
 					cell_region = (cell_positions[col][row][0], cell_positions[col][row][1], cell_size[0], cell_size[1])
 					pyautogui.screenshot(f'templates/template{col:02d}-{row:02d}.png', region=cell_region)
-			print('Template reading finish.')
+			print(f'{self.__cell_count[0]*self.__cell_count[1]} template is read.')
 			return self.__cell_count[0]*self.__cell_count[1]
 		else:
 			templates = []
@@ -69,10 +71,11 @@ class TemplateManager:
 			i = 1
 			for template in templates:
 				template.save(f'templates/template{i}.png')
+				self.__templates[str(i)] = template
 				i += 1
 			os.remove('templates/test_template.png')
 			os.remove('templates/current_template.png')
-			print('Template reading finish.')
+			print(f'{i-1} template is read.')
 			return len(templates)
 
 	def locate_match_templates(self, template_number, region, panel_topleft):
@@ -84,8 +87,8 @@ class TemplateManager:
 		# return match_list
 		match_list = []
 		game_panel = pyautogui.screenshot(region=region)
-		for im in pyautogui.locateAll(f'templates/template{template_number}.png',
-			game_panel, confidence=.5, grayscale=True):
+		template = self.__templates[str(template_number)]
+		for im in pyautogui.locateAll(template, game_panel, confidence=.6, grayscale=True):
 			location = (im.left + panel_topleft[0], im.top + panel_topleft[1])
 			match_list.append(location)
 		return match_list
