@@ -51,6 +51,8 @@ while run:
         elif read_template_button.check_click(event):
             read_template_button.draw(win)
             pygame.display.update()
+            template_manager.set_region(game_panel.get_panel_region())
+            template_manager.set_old_screen()
             templates_count, match_confidence = template_manager.read_template(game_panel.get_cell_positions(), game_panel.get_cell_size())
             game_panel.set_templates_count(templates_count)
             game_panel.set_initial_match_confidence(match_confidence)
@@ -60,6 +62,13 @@ while run:
             auto_match = match_template_button.get_is_active()
             if auto_match:
                 match_template_button.draw(win)
+            game_panel.label_cells(template_manager)
+            game_panel.padding_cells()
+            game_panel.match_template()
+
+            game_panel.draw(win, template_manager)
+            # match_template_button.draw(win)
+            pygame.display.update()
 
         # set panel size
         keys = pygame.key.get_pressed()
@@ -78,15 +87,16 @@ while run:
     if auto_match:
         start_time = time.time()
 
-        game_panel.label_cells(template_manager)
-        game_panel.padding_cells()
-        game_panel.match_template()
+        if template_manager.is_screen_change():
+            game_panel.label_cells(template_manager)
+            game_panel.padding_cells()
+            game_panel.match_template()
 
-        game_panel.draw(win, template_manager)
-        # match_template_button.draw(win)
-        pygame.display.update()
+            game_panel.draw(win, template_manager)
+            # match_template_button.draw(win)
+            pygame.display.update()
 
-        print(f'> Elasped = {time.time()-start_time:.3f} sec')
+            print(f'> Elasped = {time.time()-start_time:.3f} sec')
     else:
         # refresh window
         win.fill((10, 10, 10))

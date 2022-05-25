@@ -92,7 +92,6 @@ class GamePanel:
         for template_index in range(1, self.__templates_count+1):
             match_templates_location = template_manager.locate_match_templates(
                 template_index,
-                self.get_panel_region(),
                 self.__panel_topleft,
                 self.__match_confidence)
             for location in match_templates_location:

@@ -17,9 +17,22 @@ class TemplateManager:
 	def __init__(self, cell_count):
 		self.__cell_count = cell_count
 		self.__templates = dict()
+		self.__region = []
+		self.__old_screen = None
+		self.__small_screen_size = []
+		self.__detect_screen = False
+		self.__detect_screen_count = 0
 
 	def get_template_image(self, template_number):
 		return pygame.image.load(f'templates/template{template_number}.png')
+
+	def set_region(self, region):
+		self.__region = region
+
+	def set_old_screen(self):
+		small_size = (int(self.__region[2]/2), int(self.__region[3]/2))
+		self.__small_screen_size = small_size
+		self.__old_screen = pyautogui.screenshot(region=self.__region).resize(small_size)
 
 	def clear_template_folder(self):
 		for filename in os.listdir(folder):
@@ -76,14 +89,14 @@ class TemplateManager:
 			i = 1
 			for template in templates:
 				template.save(f'templates/template{i}.png')
-				self.__templates[str(i)] = template
+				self.__templates[str(i)] = template.resize((int(template.size[0]/2), int(template.size[1]/2)))
 				i += 1
 			os.remove('templates/test_template.png')
 			os.remove('templates/current_template.png')
 			print(f'{i-1} template is read.')
 			return len(templates), match_confidence
 
-	def locate_match_templates(self, template_number, region, panel_topleft, confidence=0.7):
+	def locate_match_templates(self, template_number, panel_topleft, confidence=0.7):
 		# match_list = []
 		# for im in pyautogui.locateAllOnScreen(f'templates/template{template_number}.png',
 		# 	confidence=.5, region=region, grayscale=True):
@@ -91,9 +104,24 @@ class TemplateManager:
 		# 	match_list.append(location)
 		# return match_list
 		match_list = []
-		game_panel = pyautogui.screenshot(region=region)
+		game_panel = pyautogui.screenshot(region=self.__region)
+		game_panel = game_panel.resize((int(game_panel.size[0]/2), int(game_panel.size[1]/2)))
 		template = self.__templates[str(template_number)]
 		for im in pyautogui.locateAll(template, game_panel, confidence=confidence, grayscale=True):
-			location = (im.left + panel_topleft[0], im.top + panel_topleft[1])
+			location = (2*im.left + panel_topleft[0], 2*im.top + panel_topleft[1])
 			match_list.append(location)
 		return match_list
+
+	def is_screen_change(self):
+		if self.__detect_screen_count > 1000:
+			self.__detect_screen_count = 0
+			return True
+
+		new_screen = pyautogui.screenshot(region=self.__region).resize(self.__small_screen_size)
+		is_same = pyautogui.locate(new_screen, self.__old_screen, confidence=0.99)
+		self.__old_screen = new_screen
+		if is_same:
+			self.__detect_screen_count += 1
+			return False
+		else:
+			return True
