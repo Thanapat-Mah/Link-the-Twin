@@ -5,16 +5,12 @@ from datetime import datetime
 import os
 import shutil
 
-# set current directory
-os.chdir(os.getcwd())
 
-
-folder = f'{os.getcwd()}\\templates'
-print(f'Init template folder at: {folder}')
 
 
 class TemplateManager:
 	def __init__(self, cell_count):
+		self.__folder = None
 		self.__cell_count = cell_count
 		self.__templates = dict()
 		self.__region = []
@@ -22,6 +18,7 @@ class TemplateManager:
 		self.__small_screen_size = []
 		self.__detect_screen = False
 		self.__detect_screen_count = 0
+		self.set_directory()
 
 	def get_template_image(self, template_number):
 		return pygame.image.load(f'templates/template{template_number}.png')
@@ -34,9 +31,23 @@ class TemplateManager:
 		self.__small_screen_size = small_size
 		self.__old_screen = pyautogui.screenshot(region=self.__region).resize(small_size)
 
+	def set_directory(self):
+		# set current directory
+		current_directory = os.getcwd()
+		os.chdir(current_directory)
+
+		folder = f'{current_directory}\\templates'
+		self.__folder = folder
+		print(f'Init template folder at: {folder}')
+		try:
+			os.mkdir(folder)
+		except Exception as e:
+			# print(f"Can't create directory {folder}. Reason: {e}")
+			pass
+
 	def clear_template_folder(self):
-		for filename in os.listdir(folder):
-		    file_path = os.path.join(folder, filename)
+		for filename in os.listdir(self.__folder):
+		    file_path = os.path.join(self.__folder, filename)
 		    try:
 		        if os.path.isfile(file_path) or os.path.islink(file_path):
 		            os.unlink(file_path)
@@ -113,7 +124,7 @@ class TemplateManager:
 		return match_list
 
 	def is_screen_change(self):
-		if self.__detect_screen_count > 1000:
+		if self.__detect_screen_count > 100:
 			self.__detect_screen_count = 0
 			return True
 
