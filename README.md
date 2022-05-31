@@ -5,7 +5,7 @@ This project is the program that help you match the cartoon character for the sa
 
 # Interfaces
 <p align="center">
-  <img src="documents/init_interfaces.png" alt="Interfaces of program"/>
+  <img src="documents/init_interfaces.PNG" alt="Interfaces of program"/>
 </p>
 
 If you want to use the program, you must mirror you game screen to the screen of your computer.
@@ -26,12 +26,12 @@ The matched pattern is visualized using the simple solid color square. The detec
 
 When the matched adjacents is found:
 <p align="center">
-  <img src="documents/match_adjacents.png" alt="Visualizaion of matched adjacents"/>
+  <img src="documents/match_adjacents.PNG" alt="Visualizaion of matched adjacents"/>
 </p>
 
 When the matched path is found:
 <p align="center">
-  <img src="documents/match_path.png" alt="Visualizaion of matched via path"/>
+  <img src="documents/match_path.PNG" alt="Visualizaion of matched via path"/>
 </p>
 
 
